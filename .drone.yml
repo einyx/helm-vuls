@@ -1,0 +1,68 @@
+---
+kind: pipeline
+name: build
+type: docker
+
+steps:
+  - name: build_cve_dictionary
+    image: plugins/docker
+    dockerfile: cve-dictionary/Dockerfile
+    context: cve-dictionary
+    privileged: true
+    network_mode: host
+    custom_dns: [1.1.1.1, 9.9.9.9]
+    settings:
+      auto_tag: true
+      auto_tag_suffix: latest
+      repo: blackhatch/beehibesh
+      cache_from: blackhatch/beehivesh:latest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      event:
+        - push
+        - tag
+  - name: build_gost
+    image: plugins/docker
+    dockerfie: gost/Dockerfile
+    context: gost
+    privileged: true
+    network_mode: host
+    custom_dns: [1.1.1.1, 9.9.9.9]
+    settings:
+      auto_tag: true
+      auto_tag_suffix: latest
+      repo: beehivesec/gost
+      cache_from: beehivesec/gost:latest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      event:
+        - push
+        - tag
+
+  - name: build_oval_dictionary
+    image: plugins/docker
+    dockerfile: oval-dictionary/Dockerfile
+    context: oval-dictionary
+    privileged: true
+    network_mode: host
+    custom_dns: [1.1.1.1, 9.9.9.9]
+    settings:
+      auto_tag: true
+      auto_tag_suffix: latest
+      repo: beehivesec/oval-dictionary
+      cache_from: beehivesec/oval-dictionary:latest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      event:
+        - push
+        - tag
+ 
