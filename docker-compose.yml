@@ -2,6 +2,7 @@
 version: '3'
 services:
   vuls:
+    build: vuls/
     image: beehivesec/vuls
     volumes:
       - ~/.ssh:/root/.ssh:ro
@@ -18,7 +19,7 @@ services:
     depends_on:
       - db
   oval:
-    build: oval-dictionary
+    build: oval-dictionary/
     image: beehivesec/oval-dictionary
     volumes:
       - ./:/vuls
