@@ -2,7 +2,7 @@
 version: '3'
 services:
   vuls:
-    image: vuls/vuls
+    image: beehivesec/vuls
     volumes:
       - ~/.ssh:/root/.ssh:ro
       - ./:/vuls
@@ -11,7 +11,7 @@ services:
       - db
   cve:
     build: cve-dictionary/
-    #image: vuls/go-cve-dictionary
+    image: beehivesec/go-cve-dictionary
     volumes:
       - ./:/vuls
       - ./vuls-log:/var/log/vuls
@@ -19,7 +19,7 @@ services:
       - db
   oval:
     build: oval-dictionary
-    #image: vuls/goval-dictionary
+    image: beehivesec/oval-dictionary
     volumes:
       - ./:/vuls
       - ./vuls-log:/var/log/vuls
@@ -27,7 +27,7 @@ services:
       - db
 
   gost:
-    #image: vuls/gost
+    image: vuls/gost
     build: gost/
     volumes:
       - ./:/vuls
